@@ -14,14 +14,6 @@ export default {
     },
   },
 
-  computed: {},
-
-  watch: {
-    $refs() {
-      console.log('yes')
-    },
-  },
-
   methods: {
     clickItme({ target }) {
       const child = [].slice.call(this.$refs.sidebar.children)
