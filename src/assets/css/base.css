@@ -1,0 +1,35 @@
+* {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+html {
+	font-size: 16px;
+	font-family: -apple-system, Helvetica, sans-serif;
+}
+
+input {
+	border: none;
+}
+
+:root {
+	--red: #ee0a24;
+	--bg: #f6f6f6;
+}
+
+.clear-fix::after {
+	clear: both;
+	content: '';
+	display: block;
+	width: 0px;
+	height: 0px;
+	visibility: hidden;
+}
+
+.clear-fix {
+	zoom: 1;
+}
