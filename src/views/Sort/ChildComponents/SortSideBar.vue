@@ -9,7 +9,8 @@
         <van-sidebar-item :title="item.title" />
       </div>
     </van-sidebar> -->
-    <sidebar class="sort-side-bar">
+    <sidebar class="sort-side-bar"
+             v-model="activeKeyCopy">
       <sidebar-item v-for="item in sortList"
                     :key="item.id"
                     :title="item.title"
@@ -82,6 +83,8 @@ export default {
   width: 85px;
 
   .sort-side-bar {
+    height: calc(100vh - 55px);
+
     &::-webkit-scrollbar {
       width: 0px;
       height: 0px;
