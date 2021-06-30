@@ -105,7 +105,7 @@ export default {
     }) {
       // 准备滑动时删除掉transition类
       this.removeTransition()
-
+      console.log()
       const y = clientY - this.sidebar.offsetTop
 
       // 更新开始坐标
