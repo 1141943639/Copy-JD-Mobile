@@ -1,14 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
-// import Home from 'views/Home/Home.vue';
-// import Sort from 'views/Sort/Sort.vue';
-// import Cart from 'views/Cart/Cart.vue';
-// import Profile from 'views/Profile/Profile.vue';
-// import Product from 'views/Product/Product.vue';
-// import Login from 'views/Login/Login.vue';
-// import Register from 'views/Register/Register.vue';
-
 import { hasCookie } from 'common/cookieAPI.js';
 
 Vue.use(VueRouter);
@@ -58,7 +49,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-	mode: 'history',
+	// mode: 'history',
 	base: process.env.BASE_URL,
 	routes,
 });
