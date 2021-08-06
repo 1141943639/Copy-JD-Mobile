@@ -1,4 +1,4 @@
-import { requestSortList } from 'network/sort';
+import { requestSortList, requestSortContent } from 'network/sort';
 
 export default {
 	namespaced: true,
@@ -25,6 +25,10 @@ export default {
 			const { data } = await requestSortList();
 
 			commit('updateSortList', data);
+		},
+
+		async requestSortContent(c, index) {
+			return await requestSortContent(index);
 		},
 	},
 

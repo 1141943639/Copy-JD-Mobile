@@ -1,13 +1,27 @@
 <template>
-  <div class="sidebar"
-       @click="clickItme"
-       ref="sidebar"
+  <div class="sidebar-content"
+       ref="sidebarContent"
        @touchmove="moveBar"
        @touchstart="touchStart"
        @touchend="touchEnd">
-    <div class="sidebar-position"
+    <div class="sidebar-content-position"
          ref="position">
-      <slot />
+      <div class="sidebar-content-info"
+           v-for="info in list"
+           :key="info.id">
+        <div class="sidebar-content-title">{{info.title}}</div>
+        <div class="sidebar-content-item">
+          <div class="sidebar-content-item-info"
+               v-for="item in info.list"
+               :key="item.id">
+            <div class="sidebar-content-item-img">
+              <img :src="item.img"
+                   alt="">
+            </div>
+            <div class="sidebar-content-item-text">{{item.text}}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -15,15 +29,10 @@
 <script>
 export default {
   props: {
-    value: {
-      type: Number,
+    list: {
+      type: Array,
+      default: () => [],
     },
-  },
-
-  mounted() {
-    this.pos.addEventListener('transitionend', () => {
-      this.removeTransition()
-    })
   },
 
   data() {
@@ -37,13 +46,19 @@ export default {
     }
   },
 
+  watch: {
+    list() {
+      this.changePosY(0)
+    },
+  },
+
   computed: {
     pos() {
       return this.$refs.position
     },
 
-    sidebar() {
-      return this.$refs.sidebar
+    sidebarContent() {
+      return this.$refs.sidebarContent
     },
 
     //
@@ -56,48 +71,11 @@ export default {
     },
 
     bottomThreshold() {
-      return -(this.pos.offsetHeight - this.sidebar.offsetHeight)
+      return -(this.pos.offsetHeight - this.sidebarContent.offsetHeight)
     },
   },
 
   methods: {
-    // 点击滚动到选中标签的坐标
-    clickItme({ target }) {
-      const child = [].slice.call(this.$refs.position.children)
-
-      let activeItem = []
-
-      // 清除所有标签的active类
-      child.forEach((item) => {
-        item.classList.remove('sidebar-item-active')
-      })
-
-      // 为选中标签添加active类
-      target.classList.add('sidebar-item-active')
-
-      for (const index in child) {
-        const item = child[index]
-
-        if (item === target) {
-          // 更新选中标签的index
-          this.$emit('input', Number(index))
-
-          activeItem = item
-          break
-        }
-      }
-
-      this.addTransition()
-
-      // 滚动到选中标签的offsetTop
-      this.changePosY(
-        // 判断滚动后是否超出了底部的阈值
-        -activeItem.offsetTop < this.bottomThreshold
-          ? this.bottomThreshold
-          : -activeItem.offsetTop
-      )
-    },
-
     // 手指按下
     touchStart({
       touches: {
@@ -107,7 +85,7 @@ export default {
       // 准备滑动时删除掉transition类
       this.removeTransition()
 
-      const y = clientY - this.sidebar.offsetTop
+      const y = clientY - this.sidebarContent.offsetTop
 
       // 更新开始坐标
       this.beforeMove = y
@@ -124,7 +102,7 @@ export default {
       // 每移动一次就计算出手指移动前（beforeMove）和移动后（abountMove）的差值（moveDistance）
       // 然后translatY加差值就完事了
 
-      const y = clientY - this.sidebar.offsetTop
+      const y = clientY - this.sidebarContent.offsetTop
 
       this.aboutMove = y
 
@@ -142,7 +120,7 @@ export default {
         0: { clientY },
       },
     }) {
-      const y = clientY - this.sidebar.offsetTop
+      const y = clientY - this.sidebarContent.offsetTop
 
       // 手指离开时判断滚动是否超出阈值
       if (
@@ -180,21 +158,58 @@ export default {
 
     // 添加和删除transition类 是归位的过渡类
     addTransition() {
-      this.pos.classList.add('sidebar-position-move')
+      this.pos.classList.add('sidebar-content-position-move')
     },
     removeTransition() {
-      this.pos.classList.remove('sidebar-position-move')
+      this.pos.classList.remove('sidebar-content-position-move')
     },
   },
 }
 </script>
 
 <style scoped lang='less'>
-.sidebar {
-  overflow: hidden;
+.sidebar-content {
+  width: 100%;
   height: 100%;
+  overflow: hidden;
 
-  .sidebar-position-move {
+  .sidebar-content-info {
+    padding: 19px 7px 0px;
+
+    .sidebar-content-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .sidebar-content-item {
+      display: flex;
+      flex-wrap: wrap;
+
+      margin-top: 9px;
+      padding: 7px 10px 0px;
+
+      .sidebar-content-item-info {
+        text-align: center;
+        width: 85px;
+
+        .sidebar-content-item-img {
+          & img {
+            width: 70px;
+            height: 70px;
+          }
+        }
+
+        .sidebar-content-item-text {
+          height: 35px;
+          margin-top: 2px;
+
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .sidebar-content-position-move {
     transition: transform 0.3s;
   }
 }

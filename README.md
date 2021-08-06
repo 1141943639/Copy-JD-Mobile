@@ -1,25 +1,25 @@
 # CopyJDMobile
 
-## Project setup
+#### 介绍
 
-```
-npm install
-```
+使用 vue-cli 搭建的移动端商城 DEMO
 
-### Compiles and hot-reloads for development
+Node.js 环境
 
-```
-npm run serve
-```
+状态和数据使用了 vuex 来管理
 
-### Compiles and minifies for production
+用 vue-router 来控制路由跳转
 
-```
-npm run build
-```
+组件库使用了 vantUI 库
 
-### Customize configuration
+网络请求方面使用了原生的 fetch
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+内容包含首页、商品详情、分类、购物车、个人界面、登录和注册界面
 
-# 测试提交
+登录信息运用了 Cookie 作为储存
+
+购物车、收藏列表、历史记录用了 local 储存和操作
+
+#### 使用
+
+npm run serve 开始

@@ -215,7 +215,7 @@ async function updateCollectionStore(newCollectionStore) {
 	localStorage.setItem('collectionStore', JSON.stringify(newCollectionStore));
 
 	return {
-		shopCollection: getShopCollection(),
-		productCollection: getProductCollection(),
+		shopCollection: getShopCollection().shopCollection,
+		productCollection: getProductCollection().productCollection,
 	};
 }

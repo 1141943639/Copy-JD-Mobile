@@ -79,9 +79,6 @@ export default {
     shopsIid: {
       type: [Number, String],
     },
-    image: {
-      type: String,
-    },
     title: {
       type: Object,
     },
@@ -109,6 +106,13 @@ export default {
       const price = String(this.selectedSkuComb.price).split('')
       price.splice(-2, 0, '.')
       return price.join('')
+    },
+
+    image() {
+      const { s1 } = this.selectedSkuComb
+      const v = this.skuData.sku.tree[0].v
+
+      return v.find(({ id }) => id === s1).previewImgUrl
     },
   },
 

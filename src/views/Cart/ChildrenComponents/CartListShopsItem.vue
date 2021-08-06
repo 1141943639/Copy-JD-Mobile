@@ -25,7 +25,6 @@
                               :iid="item.productIid"
                               :title="item.title"
                               :selectedNum="item.selectedNum"
-                              :image="item.image"
                               :shopsIid="shop.shopsIid"
                               :selected="item.selected" />
   </div>
@@ -54,33 +53,11 @@ export default {
     },
   },
 
-  watch: {
-    async productHasSelected(hasSelected) {
-      // if (!hasSelected) {
-      //   await this.changeShopProperty(['selected', false, this.shop.shopsIid])
-      // }
-    },
-  },
-
   methods: {
     ...mapActions(['changeShopSelected', 'changeProductProperty']),
     ...mapMutations(['updateCartList']),
 
     async changeSelected() {
-      // await this.changeShopProperty([
-      //   'selected',
-      //   !this.shop.selected,
-      //   this.shop.shopsIid,
-      // ])
-
-      // const newList = this.shop.list.map((item) => {
-      //   item.selected = this.shop.selected
-
-      //   return item
-      // })
-
-      // await this.changeShopProperty(['list', newList, this.shop.shopsIid])
-
       this.changeShopSelected([this.shop.shopsIid, !this.shop.selected])
     },
   },

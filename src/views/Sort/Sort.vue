@@ -1,26 +1,18 @@
 <template>
   <div class="sort-wrap">
-    <sort-side-bar :sortList="sortList" :activeKey="activeKey" />
+    <sort-content />
     <bottom-nav-bar />
   </div>
 </template>
 
 <script>
-import SortSideBar from './ChildComponents/SortSideBar.vue'
+import SortContent from './ChildComponents/SortContent/SortContent.vue'
 import BottomNavBar from './ChildComponents/BottomNavBar.vue'
-
-import { createNamespacedHelpers } from 'vuex'
-
-const { mapState } = createNamespacedHelpers('sort')
 
 export default {
   components: {
-    SortSideBar,
+    SortContent,
     BottomNavBar,
-  },
-
-  computed: {
-    ...mapState(['sortList', 'activeKey']),
   },
 }
 </script>

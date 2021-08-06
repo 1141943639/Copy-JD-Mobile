@@ -71,10 +71,10 @@ const { mapActions, mapGetters } = createNamespacedHelpers('login')
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      passwordRewrite: '',
-      email: '',
+      username: '123',
+      password: '123',
+      passwordRewrite: '123',
+      email: '123@qq.com',
 
       usernameHasRepeat: false,
       emailHasRepeat: false,

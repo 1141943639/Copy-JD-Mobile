@@ -45,11 +45,9 @@ export default {
 					productIid,
 					title,
 					selectedNum,
-
 					shop,
 				},
 			},
-			rootGetters,
 		}) {
 			const { cartList } = await addProduct(shop, {
 				selectedSkuComb,
@@ -57,8 +55,6 @@ export default {
 				productIid,
 				title,
 				selectedNum,
-
-				image: rootGetters['product/getSelectedImage'],
 			});
 
 			commit('updateCartList', cartList);

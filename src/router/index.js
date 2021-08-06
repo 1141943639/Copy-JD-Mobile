@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from 'views/Home/Home.vue';
-import Sort from 'views/Sort/Sort.vue';
-import Cart from 'views/Cart/Cart.vue';
-import Profile from 'views/Profile/Profile.vue';
-import Product from 'views/Product/Product.vue';
-import Login from 'views/Login/Login.vue';
-import Register from 'views/Register/Register.vue';
+// import Home from 'views/Home/Home.vue';
+// import Sort from 'views/Sort/Sort.vue';
+// import Cart from 'views/Cart/Cart.vue';
+// import Profile from 'views/Profile/Profile.vue';
+// import Product from 'views/Product/Product.vue';
+// import Login from 'views/Login/Login.vue';
+// import Register from 'views/Register/Register.vue';
 
 import { hasCookie } from 'common/cookieAPI.js';
 
@@ -17,7 +17,7 @@ const routes = [
 	{
 		path: '/',
 		name: 'Home',
-		component: Home,
+		component: () => import('views/Home/Home.vue'),
 		meta: {
 			title: '京东首页',
 		},
@@ -25,17 +25,17 @@ const routes = [
 	{
 		path: '/sort',
 		name: 'Sort',
-		component: Sort,
+		component: () => import('views/Sort/Sort.vue'),
 	},
 	{
 		path: '/cart',
 		name: 'Cart',
-		component: Cart,
+		component: () => import('views/Cart/Cart.vue'),
 	},
 	{
 		path: '/profile',
 		name: 'Profile',
-		component: Profile,
+		component: () => import('views/Profile/Profile.vue'),
 		meta: {
 			verifyLogin: true,
 		},
@@ -43,17 +43,17 @@ const routes = [
 	{
 		path: '/product/:iid',
 		name: 'Product',
-		component: Product,
+		component: () => import('views/Product/Product.vue'),
 	},
 	{
 		path: '/login',
 		name: 'Login',
-		component: Login,
+		component: () => import('views/Login/Login.vue'),
 	},
 	{
 		path: '/register',
 		name: 'Register',
-		component: Register,
+		component: () => import('views/Register/Register.vue'),
 	},
 ];
 

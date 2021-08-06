@@ -33,8 +33,6 @@ export default {
 		async registerNewUser({ commit }, newUserList) {
 			const userList = await registerUser(newUserList);
 
-			console.log(userList);
-
 			commit('updateUserList', userList);
 		},
 	},
