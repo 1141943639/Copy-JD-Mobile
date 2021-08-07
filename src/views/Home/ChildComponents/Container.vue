@@ -1,23 +1,12 @@
 <template>
   <div class="container-wrapper">
-    <!-- <gradient-box v-for="item in goodsList"
-                  :key="item.id"
-                  :img="item.url"
-                  class="goods-item">
-      <template #text>
-        <div class="item-text">
-          <div class="item-top-text">{{item.topText}}</div>
-          <div class="item-bottom-text">{{item.bottomText}}</div>
-        </div>
-      </template>
-    </gradient-box> -->
     <div v-for="item in goodsList"
          :key="item.id"
          class="goods-item">
-      <img :src="item.bg"
+      <img v-lazy="item.bg"
            alt=""
            class="item-bg">
-      <img :src="item.url"
+      <img v-lazy="item.url"
            alt=""
            class="item-img">
       <div class="item-text">

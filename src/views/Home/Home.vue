@@ -1,5 +1,6 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper"
+       ref="wrapper">
     <top-nav-bar />
     <swiper :imageList="swiperImage" />
     <activity :list="activityList"
@@ -39,6 +40,8 @@ import {
 } from 'network/home/index.js'
 
 export default {
+  name: 'Home',
+
   components: {
     TopNavBar,
     Swiper,
@@ -60,6 +63,7 @@ export default {
       separationGoodsList: {},
       guessYouLikeGoodsList: [],
       guessYouLikeGoodsListPage: 0,
+      browseProgress: 0,
     }
   },
   created() {
@@ -70,6 +74,20 @@ export default {
     this.requestContainerGoodsList()
     this.requestSeparationGoodsList()
   },
+
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$nextTick(() => {
+        window.scrollTo(0, vm.browseProgress)
+      })
+    })
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.browseProgress = window.scrollY
+    next()
+  },
+
   methods: {
     requestSwiperImage() {
       requestSwiperImage().then((res) => (this.swiperImage = res))

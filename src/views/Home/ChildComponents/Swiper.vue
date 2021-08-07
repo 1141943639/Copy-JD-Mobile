@@ -8,7 +8,7 @@
                       :key="item.id"
                       class="item"
                       @click="clickItem">
-        <img :src="item.url"
+        <img v-lazy="item.url"
              alt=""
              class="img">
       </van-swipe-item>

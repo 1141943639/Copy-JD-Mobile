@@ -18,6 +18,7 @@ import ProfileLogout from './ChildComponents/ProfileLogout.vue'
 import BottomNavBar from './ChildComponents/BottomNavBar.vue'
 
 export default {
+  name: 'Profile',
   components: {
     TopNavBar,
     ProfileHeader,

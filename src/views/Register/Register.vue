@@ -10,6 +10,7 @@ import TopNavBar from './ChildComponents/TopNavBar.vue'
 import RegisterInput from './ChildComponents/RegisterInput.vue'
 
 export default {
+  name: 'Register',
   components: {
     TopNavBar,
     RegisterInput,

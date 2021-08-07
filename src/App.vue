@@ -1,6 +1,10 @@
 <template>
   <div>
-    <router-view :key="key" />
+
+    <keep-alive exclude="Product, NavBar">
+      <router-view :key="key" />
+    </keep-alive>
+
     <loading :isLoading="isLoading" />
   </div>
 </template>
@@ -30,7 +34,7 @@ export default {
     ...mapState(['isLoading']),
 
     key() {
-      return this.$router.path + Math.random()
+      return this.$route.path + Math.random
     },
   },
 

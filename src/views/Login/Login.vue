@@ -10,6 +10,7 @@ import TopNavBar from './ChildComponents/TopNavBar.vue'
 import LoginInput from './ChildComponents/LoginInput/LoginInput.vue'
 
 export default {
+  name: 'Login',
   components: {
     TopNavBar,
     LoginInput,

@@ -21,6 +21,7 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapState } = createNamespacedHelpers('cartList')
 
 export default {
+  name: 'Cart',
   components: {
     TopNavBar,
     CartList,

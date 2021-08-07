@@ -10,6 +10,8 @@ import SortContent from './ChildComponents/SortContent/SortContent.vue'
 import BottomNavBar from './ChildComponents/BottomNavBar.vue'
 
 export default {
+  name: 'Sort',
+
   components: {
     SortContent,
     BottomNavBar,

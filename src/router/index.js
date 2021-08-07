@@ -14,6 +14,12 @@ const routes = [
 		},
 	},
 	{
+		path: '/Home',
+		redirect: {
+			name: 'Home',
+		},
+	},
+	{
 		path: '/sort',
 		name: 'Sort',
 		component: () => import('views/Sort/Sort.vue'),

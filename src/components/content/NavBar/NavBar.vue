@@ -21,6 +21,7 @@
 
 <script>
 export default {
+  name: 'NavBar',
   data() {
     return {
       active: 0,
@@ -28,7 +29,7 @@ export default {
         {
           name: '首页',
           icon: 'home',
-          to: '/',
+          to: 'Home',
         },
         {
           name: '分类',
@@ -48,7 +49,7 @@ export default {
       ],
     }
   },
-  created() {
+  activated() {
     for (const i in this.tabList) {
       const { to } = this.tabList[i]
 
