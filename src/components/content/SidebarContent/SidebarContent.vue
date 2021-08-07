@@ -38,17 +38,25 @@ export default {
   data() {
     return {
       translateY: 0,
-      aboutMove: 0,
+      afterMove: 0,
       beforeMove: 0,
 
       // 缓冲阈值 就是可以回弹的那部分
       threshold: 100,
+      topThreshold: 0,
+      bottomThreshold: 0, // 底部阈值就是乡下滚动多少到达底部
     }
   },
 
   watch: {
     list() {
       this.changePosY(0)
+
+      // 等待list有数据了并且dom加载完毕
+      this.$nextTick(() => {
+        // 更新底部阈值
+        this.bottomThreshold = this.getBottomThreshold()
+      })
     },
   },
 
@@ -61,17 +69,8 @@ export default {
       return this.$refs.sidebarContent
     },
 
-    //
     moveDistance() {
-      return this.aboutMove - this.beforeMove
-    },
-
-    topThreshold() {
-      return 0
-    },
-
-    bottomThreshold() {
-      return -(this.pos.offsetHeight - this.sidebarContent.offsetHeight)
+      return this.afterMove - this.beforeMove
     },
   },
 
@@ -104,24 +103,18 @@ export default {
 
       const y = clientY - this.sidebarContent.offsetTop
 
-      this.aboutMove = y
+      this.afterMove = y
 
       // 检测是否缓冲阈值
       if (this.checkHasBufferThresholdExceeded()) return
 
       this.changePosY(this.translateY + this.moveDistance)
 
-      // 元素移动完后 原本的aboutMove就变成了beforeMove
+      // 元素移动完后 原本的afterMove就变成了beforeMove
       this.beforeMove = y
     },
 
-    touchEnd({
-      changedTouches: {
-        0: { clientY },
-      },
-    }) {
-      const y = clientY - this.sidebarContent.offsetTop
-
+    touchEnd() {
       // 手指离开时判断滚动是否超出阈值
       if (
         this.translateY > this.topThreshold ||
@@ -163,6 +156,12 @@ export default {
     removeTransition() {
       this.pos.classList.remove('sidebar-content-position-move')
     },
+
+    // 获取底部阈值
+    getBottomThreshold() {
+      // 因为每个sidecontent的高度不同，所以需要动态的获取底部阈值
+      return -(this.pos.offsetHeight - this.sidebarContent.offsetHeight)
+    },
   },
 }
 </script>
@@ -173,37 +172,39 @@ export default {
   height: 100%;
   overflow: hidden;
 
-  .sidebar-content-info {
-    padding: 19px 7px 0px;
+  .sidebar-content-position {
+    .sidebar-content-info {
+      padding: 19px 7px 0px;
 
-    .sidebar-content-title {
-      font-size: 14px;
-      font-weight: 700;
-    }
+      .sidebar-content-title {
+        font-size: 14px;
+        font-weight: 700;
+      }
 
-    .sidebar-content-item {
-      display: flex;
-      flex-wrap: wrap;
+      .sidebar-content-item {
+        display: flex;
+        flex-wrap: wrap;
 
-      margin-top: 9px;
-      padding: 7px 10px 0px;
+        margin-top: 9px;
+        padding: 7px 10px 0px;
 
-      .sidebar-content-item-info {
-        text-align: center;
-        width: 85px;
+        .sidebar-content-item-info {
+          text-align: center;
+          width: 85px;
 
-        .sidebar-content-item-img {
-          & img {
-            width: 70px;
-            height: 70px;
+          .sidebar-content-item-img {
+            & img {
+              width: 70px;
+              height: 70px;
+            }
           }
-        }
 
-        .sidebar-content-item-text {
-          height: 35px;
-          margin-top: 2px;
+          .sidebar-content-item-text {
+            height: 35px;
+            margin-top: 2px;
 
-          font-size: 12px;
+            font-size: 12px;
+          }
         }
       }
     }

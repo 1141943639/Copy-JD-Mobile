@@ -44,10 +44,6 @@ export default {
 </script>
 
 <style scoped lang='less'>
-.sort-content {
-  height: 100%;
-
-  .sort-content-info {
-  }
+.sort-content-info {
 }
 </style>
