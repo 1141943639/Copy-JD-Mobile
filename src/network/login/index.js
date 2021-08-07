@@ -52,6 +52,7 @@ function getIsLogin() {
 }
 
 function setLogin(value) {
+	console.log(hasCookie('isLogin'));
 	setCookie('isLogin', value, 99999);
 }
 
