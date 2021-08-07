@@ -4,6 +4,8 @@
 
 使用 vue-cli 搭建的移动端商城 DEMO
 
+可用 pages 预览 path：/dist/index.html
+
 Node.js 环境
 
 状态和数据使用了 vuex 来管理
