@@ -96,6 +96,7 @@ export default {
       selecedText: '',
       isConfirm: false,
       selectedNumCopy: this.selectedNum,
+      isChanged: false,
     }
   },
 
@@ -147,17 +148,31 @@ export default {
     ]),
     ...mapMutations(['setProperty']),
 
-    changeNum(value) {
-      this.changeProductProperty([
+    async changeNum(value) {
+      if (this.isChanged) return
+      this.isChanged = true
+
+      await this.changeProductProperty([
         'selectedNum',
         value,
         this.shopsIid,
         this.iid,
       ])
+
+      this.isChanged = false
     },
 
     async changeSelected() {
-      this.changeProductSelected([this.shopsIid, this.iid, !this.selected])
+      if (this.isChanged) return
+      this.isChanged = true
+
+      await this.changeProductSelected([
+        this.shopsIid,
+        this.iid,
+        !this.selected,
+      ])
+
+      this.isChanged = false
     },
 
     async clickDelete() {

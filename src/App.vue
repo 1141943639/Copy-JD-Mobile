@@ -14,7 +14,6 @@ import Loading from 'components/common/Loading/Loading.vue'
 
 import { createNamespacedHelpers, mapState } from 'vuex'
 
-const { mapActions: cartListActions } = createNamespacedHelpers('cartList')
 const { mapActions: historyActions } = createNamespacedHelpers('history')
 const { mapActions: collectionActions } = createNamespacedHelpers('collection')
 const { mapActions: loginActions } = createNamespacedHelpers('login')
@@ -39,7 +38,6 @@ export default {
   },
 
   methods: {
-    ...cartListActions(['requestCartList']),
     ...historyActions(['requestHistory']),
     ...collectionActions(['requestCollection']),
     ...loginActions(['requestLogin']),
@@ -48,7 +46,6 @@ export default {
 
     // 初始化数据请求
     initRequst() {
-      this.requestCartList()
       this.requestHistory()
       this.requestCollection()
       this.requestLogin()

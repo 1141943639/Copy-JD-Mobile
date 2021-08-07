@@ -38,6 +38,7 @@ export default {
 		// 添加商品
 		async addProduct({
 			commit,
+			dispatch,
 			rootState: {
 				product: {
 					selectedSkuComb,
@@ -49,37 +50,58 @@ export default {
 				},
 			},
 		}) {
-			const { cartList } = await addProduct(shop, {
-				selectedSkuComb,
-				skuData,
-				productIid,
-				title,
-				selectedNum,
-			});
+			await dispatch(
+				'changeIsLoading',
+				async () => {
+					const { cartList } = await addProduct(shop, {
+						selectedSkuComb,
+						skuData,
+						productIid,
+						title,
+						selectedNum,
+					});
 
-			commit('updateCartList', cartList);
+					commit('updateCartList', cartList);
+				},
+				{ root: true }
+			);
 		},
 
 		// 删除商品
-		async deleteProduct({ commit }, [shopIid, productIid]) {
-			const { cartList } = await deleteProduct(shopIid, productIid);
+		async deleteProduct({ commit, dispatch }, [shopIid, productIid]) {
+			await dispatch(
+				'changeIsLoading',
+				async () => {
+					const { cartList } = await deleteProduct(
+						shopIid,
+						productIid
+					);
 
-			commit('updateCartList', cartList);
+					commit('updateCartList', cartList);
+				},
+				{ root: true }
+			);
 		},
 
 		// 更改商品数据
 		async changeProductProperty(
-			{ commit },
+			{ commit, dispatch },
 			[key, value, shopIid, productIid]
 		) {
-			const { cartList } = await changeProductProperty(
-				key,
-				value,
-				shopIid,
-				productIid
-			);
+			await dispatch(
+				'changeIsLoading',
+				async () => {
+					const { cartList } = await changeProductProperty(
+						key,
+						value,
+						shopIid,
+						productIid
+					);
 
-			commit('updateCartList', cartList);
+					commit('updateCartList', cartList);
+				},
+				{ root: true }
+			);
 		},
 
 		// 更改店铺数据
@@ -90,8 +112,16 @@ export default {
 		},
 
 		// 请求购物车数据
-		async requestCartList({ commit }) {
-			const { cartList } = await requestCartList();
+		async requestCartList({ commit, dispatch }) {
+			let cartList = [];
+
+			await dispatch(
+				'changeIsLoading',
+				async () => {
+					cartList = (await requestCartList()).cartList;
+				},
+				{ root: true }
+			);
 
 			commit('updateCartList', cartList);
 		},
@@ -119,55 +149,81 @@ export default {
 			{ commit, dispatch, getters },
 			[shopIid, value]
 		) {
-			await dispatch('changeShopProperty', ['selected', value, shopIid]);
+			await dispatch(
+				'changeIsLoading',
+				async () => {
+					await dispatch('changeShopProperty', [
+						'selected',
+						value,
+						shopIid,
+					]);
 
-			const { shop } = getters.getShop(shopIid);
+					const { shop } = getters.getShop(shopIid);
 
-			// 根据商铺的选择 全选或者取消子商品
-			for (const pro of shop.list) {
-				pro.selected = shop.selected;
-			}
+					// 根据商铺的选择 全选或者取消子商品
+					for (const pro of shop.list) {
+						pro.selected = shop.selected;
+					}
 
-			const { cartList } = await changeShopProperty(
-				'list',
-				shop.list,
-				shopIid
+					const { cartList } = await changeShopProperty(
+						'list',
+						shop.list,
+						shopIid
+					);
+
+					commit('updateCartList', cartList);
+				},
+				{ root: true }
 			);
-
-			commit('updateCartList', cartList);
 		},
 
 		// 更改商品的选中
 		async changeProductSelected(
-			{ dispatch, getters },
+			{ commit, dispatch, getters },
 			[shopIid, productIid, value]
 		) {
-			await dispatch('changeProductProperty', [
-				'selected',
-				value,
-				shopIid,
-				productIid,
-			]);
+			await dispatch(
+				'changeIsLoading',
+				async () => {
+					let cartList = [];
 
-			const { shop } = getters.getShop(shopIid);
+					cartList = (
+						await changeProductProperty(
+							'selected',
+							value,
+							shopIid,
+							productIid
+						)
+					).cartList;
 
-			// 如果此商品是商铺内的第一个商品 将商品的选中变为true
-			if (!shop.selected) {
-				await dispatch('changeShopProperty', [
-					'selected',
-					true,
-					shopIid,
-				]);
-			}
+					// 如果此商品是商铺内的第一个商品 将商品的选中变为true
+					if (
+						getters.productHasAllSelected(
+							shopIid,
+							getters.getShop(shopIid, cartList).shop
+						)
+					) {
+						cartList = (
+							await changeShopProperty('selected', true, shopIid)
+						).cartList;
+					}
 
-			// 如果商铺内没有选中的商品 将商品的选中变为false
-			if (getters.productHasNotSelected(shopIid)) {
-				await dispatch('changeShopProperty', [
-					'selected',
-					false,
-					shopIid,
-				]);
-			}
+					// 如果商铺内没有选中的商品 将商品的选中变为false
+					if (
+						getters.productHasNotSelected(
+							shopIid,
+							getters.getShop(shopIid, cartList).shop
+						)
+					) {
+						cartList = (
+							await changeShopProperty('selected', false, shopIid)
+						).cartList;
+					}
+
+					commit('updateCartList', cartList);
+				},
+				{ root: true }
+			);
 		},
 
 		// 全选
@@ -244,9 +300,9 @@ export default {
 		},
 
 		getShop({ cartList }) {
-			return (shopIid) => {
-				for (const shopIndex in cartList) {
-					const shop = cartList[shopIndex];
+			return (shopIid, otherList = cartList) => {
+				for (const shopIndex in otherList) {
+					const shop = otherList[shopIndex];
 
 					if (shop.shopsIid === shopIid) {
 						return {
@@ -261,17 +317,13 @@ export default {
 		},
 
 		productHasAllSelected(state, getters) {
-			return (shopIid) => {
-				const { shop } = getters.getShop(shopIid);
-
+			return (shopIid, shop = getters.getShop(shopIid).shop) => {
 				return shop.list.every(({ selected }) => selected);
 			};
 		},
 
 		productHasNotSelected(state, getters) {
-			return (shopIid) => {
-				const { shop } = getters.getShop(shopIid);
-
+			return (shopIid, shop = getters.getShop(shopIid).shop) => {
 				return shop.list.every(({ selected }) => !selected);
 			};
 		},

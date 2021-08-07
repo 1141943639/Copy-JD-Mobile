@@ -18,7 +18,9 @@ import CartListSku from './ChildrenComponents/CartListSku.vue'
 import BottomNavBar from './ChildrenComponents/BottomNavBar.vue'
 
 import { createNamespacedHelpers } from 'vuex'
-const { mapState } = createNamespacedHelpers('cartList')
+const { mapState, mapActions } = createNamespacedHelpers('cartList')
+
+import { hasCookie } from 'common/cookieAPI.js'
 
 export default {
   name: 'Cart',
@@ -31,8 +33,32 @@ export default {
     BottomNavBar,
   },
 
+  data() {
+    return {
+      isLogin: false,
+    }
+  },
+
   computed: {
     ...mapState(['cartList']),
+  },
+
+  methods: {
+    ...mapActions(['requestCartList']),
+  },
+
+  created() {
+    // 当第一次访问购物车时请求数据 并且保存初次访问时的登录状态
+    this.requestCartList()
+    this.isLogin = hasCookie('isLogin')
+  },
+
+  activated() {
+    // 当购物车组件被缓存完之后每次进入都会判断登录状态的改变
+    if (hasCookie('isLogin') !== this.isLogin) {
+      // 如果登录状态改变了就重新请求数据
+      this.requestCartList()
+    }
   },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="cart-list-blank-wrap"
-       v-if="!Object.keys(cartList).length">
+       v-if="!isLoading && !Object.keys(cartList).length">
     <van-empty image="https://img11.360buyimg.com/jdphoto/s180x180_jfs/t18163/292/540553659/74408/adeb7463/5a93c51cN3bb5e37b.png"
                class="cart-list-blank">
       <template #description>
@@ -13,12 +13,13 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
+import { createNamespacedHelpers, mapState as rootState } from 'vuex'
 const { mapState } = createNamespacedHelpers('cartList')
 
 export default {
   computed: {
     ...mapState(['cartList']),
+    ...rootState(['isLoading']),
   },
 }
 </script>
