@@ -17,6 +17,8 @@ export default {
       await this.logout()
 
       this.$router.push('/')
+
+      location.reload(true)
     },
   },
 }

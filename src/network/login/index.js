@@ -27,8 +27,6 @@ export async function login(username) {
 
 	setLogin('true');
 
-	console.log('login');
-
 	setUsername(username);
 
 	return getIsLogin();
@@ -39,8 +37,6 @@ export async function logout() {
 	await makeRequest();
 
 	removeLogin();
-
-	console.log('logout');
 
 	setUsername('');
 
@@ -56,14 +52,11 @@ function getIsLogin() {
 }
 
 function setLogin(value) {
-	console.log(hasCookie('isLogin'));
 	setCookie('isLogin', value, 99999);
 }
 
 function removeLogin() {
 	removeCookie('isLogin');
-
-	console.log(hasCookie('isLogin'));
 }
 
 function setUsername(username) {

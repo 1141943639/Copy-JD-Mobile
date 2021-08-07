@@ -101,6 +101,7 @@ export default {
     async onLogin() {
       await this.login(this.username)
       this.$router.push('/')
+      location.reload()
     },
   },
 }
