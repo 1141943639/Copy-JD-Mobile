@@ -57,6 +57,8 @@ function setLogin(value) {
 
 function removeLogin() {
 	removeCookie('isLogin');
+
+	console.log(hasCookie('isLogin'));
 }
 
 function setUsername(username) {

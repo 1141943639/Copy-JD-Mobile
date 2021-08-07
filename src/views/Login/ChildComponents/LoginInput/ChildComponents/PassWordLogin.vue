@@ -85,12 +85,6 @@ export default {
     changeEye() {
       this.isOpenEye = !this.isOpenEye
     },
-    // updateUsername() {
-    //   this.updateProperty(['username', this.username])
-    // },
-    // updatePassword() {
-    //   this.updateProperty(['password', this.password])
-    // },
 
     checkUsername(username) {
       return this.checkHasRepeat('username', username)
