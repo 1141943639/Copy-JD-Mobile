@@ -27,6 +27,8 @@ export async function login(username) {
 
 	setLogin('true');
 
+	console.log('login');
+
 	setUsername(username);
 
 	return getIsLogin();
@@ -37,6 +39,8 @@ export async function logout() {
 	await makeRequest();
 
 	removeLogin();
+
+	console.log('logout');
 
 	setUsername('');
 
